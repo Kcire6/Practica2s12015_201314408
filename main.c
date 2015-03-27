@@ -1,7 +1,7 @@
 /* 
  * File:   main.c
  * Author: Erick
- *
+ * PRACTICA 2 ESTUCTURAS DE DATOS 1S 2015
  * Created on 27 de marzo de 2015, 2:40
  */
 
