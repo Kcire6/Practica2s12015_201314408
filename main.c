@@ -9,6 +9,7 @@
 
 #include <stdlib.h>
 #include<stdio.h>
+#include <windows.h>
 
 typedef struct node
 {  int data;
@@ -29,11 +30,46 @@ typedef struct node
   node *LR(node *);
   node *RL(node *);
   int BF(node *);
+  
+  LARGE_INTEGER t_ini, t_fin;
+  double secs;
+  double performancecounter_diff(LARGE_INTEGER *a, LARGE_INTEGER *b)
+{
+  LARGE_INTEGER freq;
+  QueryPerformanceFrequency(&freq);
+  return (double)(a->QuadPart - b->QuadPart) / (double)freq.QuadPart;
+}
 void main()
 {
     node *root=NULL;
-    int x,n,i,op;
-    do
+    int x,n,i;
+    int a1[12];
+    a1[0] = 14;
+    a1[1] = 6;
+    a1[2] = 24;
+    a1[3] = 35;
+    a1[4] = 59;
+    a1[5] = 17;
+    a1[6] = 21;
+    a1[7] = 32;
+    a1[8] = 4;
+    a1[9] = 7;
+    a1[10] = 15;
+    a1[11] = 22;
+    n=6;
+     QueryPerformanceCounter(&t_ini);
+                       for(i=0;i<12;i++)
+                       {
+                           x = a1[i];
+                        root=insert(root,x);
+                       }  
+                         QueryPerformanceCounter(&t_fin);
+                         secs = performancecounter_diff(&t_fin, &t_ini);
+                         printf("\n %.16lf segundos\n", secs*10000);
+                          preorder(root);
+                   
+    
+   /* do
         {
             printf("\n1)Create : ");
             printf("\n2)Insert : ");
@@ -48,11 +84,15 @@ void main()
                        scanf("%d",&n);
                        printf("\n Enter tree data :");
                        root=NULL;
+                        QueryPerformanceCounter(&t_ini);
                        for(i=0;i<n;i++)
                        {
                         scanf("%d",&x);
                         root=insert(root,x);
-                       }
+                       }  
+                         QueryPerformanceCounter(&t_fin);
+                         secs = performancecounter_diff(&t_fin, &t_ini);
+                         printf("\n %.16g segundos\n", secs);
                        break;
                 case 2:printf("\nEnter a data : ");
                        scanf("%d",&x);
@@ -69,7 +109,7 @@ void main()
                     break;
                  }
 
-    }while(op!=5);
+    }while(op!=5);*/
 
 }
 node * insert(node *T,int x)
