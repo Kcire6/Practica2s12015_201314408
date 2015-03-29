@@ -11,6 +11,25 @@
 #include<stdio.h>
 #include <windows.h>
 
+typedef struct{
+    struct nodo* siguiente; 
+    int* dato;
+} nodo;
+
+nodo* primer = NULL;
+nodo* ultimo = NULL;
+
+void agregar(nodo* _nodo){
+    _nodo -> siguiente = NULL;
+    if(primer == NULL){
+        primer = _nodo;
+        ultimo = _nodo; 
+    }else{
+        ultimo -> siguiente = _nodo;
+        ultimo = _nodo; 
+    }
+}
+
 typedef struct node
 {  int data;
    struct node *left,*right;
@@ -43,32 +62,44 @@ void main()
 {
     node *root=NULL;
     int x,n,i;
-    int a1[12];
-    a1[0] = 14;
-    a1[1] = 6;
-    a1[2] = 24;
-    a1[3] = 35;
-    a1[4] = 59;
-    a1[5] = 17;
-    a1[6] = 21;
-    a1[7] = 32;
-    a1[8] = 4;
-    a1[9] = 7;
-    a1[10] = 15;
-    a1[11] = 22;
-    n=6;
-     QueryPerformanceCounter(&t_ini);
-                       for(i=0;i<12;i++)
-                       {
-                           x = a1[i];
-                        root=insert(root,x);
-                       }  
-                         QueryPerformanceCounter(&t_fin);
-                         secs = performancecounter_diff(&t_fin, &t_ini);
-                         printf("\n %.16lf segundos\n", secs*10000);
-                          preorder(root);
-                   
+    nodo* i1;
     
+     QueryPerformanceCounter(&t_ini);
+    //*conteo lineas
+    FILE *pToFile = fopen("C:\\Users\\Erick\\Desktop\\Datos.txt","r");
+	int line = 0;
+	char input[512];
+	while( fgets( input, 512, pToFile )) {
+		line++;
+	}
+	fclose(pToFile);
+	n = line;
+        
+    //*registro datos
+        FILE *pToFile1 = fopen("C:\\Users\\Erick\\Desktop\\Datos.txt","r");
+	char input1[512];
+        int cont = 0;
+	while( fgets( input1, 512, pToFile1 )) {
+                 root=insert(root,atoi(input1));
+                  nodo* auxNodo = malloc(sizeof(nodo));
+                  auxNodo -> dato = atoi(input1);
+                  agregar(auxNodo);
+                  if(cont == 0){
+                      i1 = auxNodo;
+                  }
+                  cont = cont +1;
+	}
+	fclose(pToFile);
+       while(i1 != NULL){
+        printf("%d\n", i1->dato);
+        i1 = i1->siguiente;
+    }
+        QueryPerformanceCounter(&t_fin);
+        secs = performancecounter_diff(&t_fin, &t_ini);
+        printf("\n %.10lf segundos\n", secs);
+        preorder(root);
+         
+       
    /* do
         {
             printf("\n1)Create : ");
