@@ -107,13 +107,16 @@ int main(int argc,char **argv)
     node *root=NULL;
     int n;
     nodo* i1;
+    char url[1500];
+    puts("Ingrese direccion del archivo: ");
+	scanf("%s", &url);
     
      QueryPerformanceCounter(&tIn_ini);
     //*conteo lineas
-    FILE *pToFile = fopen("C:\\Users\\Erick\\Desktop\\Datos.txt","r");
+    FILE *pToFile = fopen(url,"r");
 	int line = 0;
-	char input[512];
-	while( fgets( input, 512, pToFile )) {
+	char input[5120];
+	while( fgets( input, 5120, pToFile )) {
 		line++;
 	}
 	fclose(pToFile);
@@ -121,12 +124,14 @@ int main(int argc,char **argv)
         int datos[n];
         int BubbleData[n];
         int QuickData[n];
+        int inO[n];
+        int inP[n];
         
     //*registro datos
-        FILE *pToFile1 = fopen("C:\\Users\\Erick\\Desktop\\Datos.txt","r");
-	char input1[512];
+        FILE *pToFile1 = fopen(url,"r");
+	char input1[5120];
         int cont = 0;
-	while( fgets( input1, 512, pToFile1 )) {
+	while( fgets( input1, 5120, pToFile1 )) {
                  root=insert(root,atoi(input1));
                   nodo* auxNodo = malloc(sizeof(nodo));
                   auxNodo -> dato = atoi(input1);
@@ -163,8 +168,8 @@ int main(int argc,char **argv)
         int i;
         int j;
         int temp;
-        for (i = 1; i < n; i++) {
-            for (j = 0; j < n-1; j++) {
+        for (i = 0; i < (n-1); i++) {
+            for (j = 0; j < (n-i)-1; j++) {
                 if (BubbleData[j] > BubbleData[j + 1]) {
                     temp = BubbleData[j];
                     BubbleData[j] = BubbleData[j + 1];
@@ -175,19 +180,35 @@ int main(int argc,char **argv)
         QueryPerformanceCounter(&tB_fin);
         secsB = performancecounter_diff(&tB_fin, &tB_ini);
         
-      
         //quicksort 
        QueryPerformanceCounter(&tQ_ini);
         quicksort(QuickData,0,n-1);
        QueryPerformanceCounter(&tQ_fin);
         secsQ = performancecounter_diff(&tQ_fin, &tQ_ini);
     
+        
        
-        printf("\n Tiempo Ingreso Datos: %.10lf milisegundos\n", secsIn*1000);
-        printf("\n Tiempo Recorrido Preorder: %.10lf milisegundos\n", secsRP*1000);
-        printf("\n Tiempo Bubble Sort: %.10lf milisegundos\n", secsB*1000);
-        printf("\n Tiempo Quick Sort: %.10lf milisegundos\n", secsQ*1000);
-       
+  FILE *archivo;/*El manejador de archivo*/
+  archivo=fopen("C:\\Users\\Erick\\Desktop\\MisDatos201314408.txt", "w");
+  if(archivo==NULL){
+   return 1;/*Reornamos 1 por si no lo logramos abrir o crear el  fichero, y salimos*/
+   }
+ else{
+      
+ fprintf(archivo,"DATOS PRACTICA 2 EDD 201314408\n");//Escribimos en el archivo las coordenadas
+ fprintf(archivo,"\n Tiempo Ingreso Datos: %.10lf milisegundos\n", secsIn*1000);
+ fprintf(archivo,"\n Tiempo Recorrido Preorder: %.10lf milisegundos\n", secsRP*1000);
+ fprintf(archivo,"\n Tiempo Bubble Sort: %.10lf milisegundos\n", secsB*1000);
+ fprintf(archivo,"\n Tiempo Quick Sort: %.10lf milisegundos\n", secsQ*1000);
+ 
+ 
+ 
+ }/*Fin del while*/
+    fclose(archivo);/*Cerramos el archivo*/
+ 
+
+        
+        
    /* do
         {
             printf("\n1)Create : ");
@@ -396,7 +417,7 @@ void preorder(node *T)
 {
     if(T!=NULL)
     {
-        //printf(" %d(Bf=%d)",T->data,BF(T));
+      //  printf(", %d",T->data);
         preorder(T->left);
         preorder(T->right);
     }
@@ -406,7 +427,7 @@ void inorder(node *T)
     if(T!=NULL)
     {
         inorder(T->left);
-        //printf(" %d(Bf=%d)",T->data,BF(T));
+       // printf(",%d",T->data);
         inorder(T->right);
     }
 }
