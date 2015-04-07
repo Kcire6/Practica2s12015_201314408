@@ -102,12 +102,13 @@ typedef struct node
   QueryPerformanceFrequency(&freq);
   return (double)(a->QuadPart - b->QuadPart) / (double)freq.QuadPart;
 }
-int main(int argc,char **argv)
+void main(int argc,char **argv)
 {
     node *root=NULL;
     int n;
     nodo* i1;
     char url[1500];
+    char final[500];
     puts("Ingrese direccion del archivo: ");
 	scanf("%s", &url);
     
@@ -152,17 +153,7 @@ int main(int argc,char **argv)
         QueryPerformanceCounter(&tIn_fin);
         secsIn = performancecounter_diff(&tIn_fin, &tIn_ini);
       
-     //preorder   
-        QueryPerformanceCounter(&tRP_ini);
-        preorder(root);
-        QueryPerformanceCounter(&tRP_fin);
-        secsRP = performancecounter_diff(&tRP_fin, &tRP_ini);
-       //inorder 
-        QueryPerformanceCounter(&tRI_ini);
-        inorder(root);
-        QueryPerformanceCounter(&tRI_fin);
-        secsRP = performancecounter_diff(&tRI_fin, &tRI_ini);
-    
+   
   //buuble sort  
          QueryPerformanceCounter(&tB_ini);
         int i;
@@ -187,6 +178,40 @@ int main(int argc,char **argv)
         secsQ = performancecounter_diff(&tQ_fin, &tQ_ini);
     
         
+        printf("\n\nRecorrido AVL Pre-Order:\n");
+    
+          //preorder   
+        QueryPerformanceCounter(&tRP_ini);
+        preorder(root);
+        QueryPerformanceCounter(&tRP_fin);
+        secsRP = performancecounter_diff(&tRP_fin, &tRP_ini);
+       //inorder 
+       printf("\n\nRecorrido AVL In-Order:\n");
+    
+        QueryPerformanceCounter(&tRI_ini);
+        inorder(root);
+        QueryPerformanceCounter(&tRI_fin);
+        secsRP = performancecounter_diff(&tRI_fin, &tRI_ini);
+    
+       
+     printf("\n\nSalida Bubble Sort:\n");
+     int ty;
+     for(ty=0;ty<n;ty++){
+         if(ty==0){
+         printf("%d",BubbleData[ty]);    
+         }else{
+         printf(",%d",BubbleData[ty]);    
+         }
+     }
+     printf("\n\nSalida Quick Sort:\n");
+     int tx;
+     for(tx=0;tx<n;tx++){
+         if(tx==0){
+             printf("%d",QuickData[tx]);
+         }else{
+             printf(",%d",QuickData[tx]);
+         } 
+     }
        
   FILE *archivo;/*El manejador de archivo*/
   archivo=fopen("C:\\Users\\Erick\\Desktop\\MisDatos201314408.txt", "w");
@@ -195,7 +220,11 @@ int main(int argc,char **argv)
    }
  else{
       
- fprintf(archivo,"DATOS PRACTICA 2 EDD 201314408\n");//Escribimos en el archivo las coordenadas
+      
+      
+      
+ fprintf(archivo,"DATOS PRACTICA 2 EDD 201314408\n");
+ //Escribimos en el archivo las coordenadas
  fprintf(archivo,"\n Tiempo Ingreso Datos: %.10lf milisegundos\n", secsIn*1000);
  fprintf(archivo,"\n Tiempo Recorrido Preorder: %.10lf milisegundos\n", secsRP*1000);
  fprintf(archivo,"\n Tiempo Bubble Sort: %.10lf milisegundos\n", secsB*1000);
@@ -205,52 +234,10 @@ int main(int argc,char **argv)
  
  }/*Fin del while*/
     fclose(archivo);/*Cerramos el archivo*/
- 
-
+    puts(" ");
+    scanf("%s",&final);
         
         
-   /* do
-        {
-            printf("\n1)Create : ");
-            printf("\n2)Insert : ");
-            printf("\n3)Delete : ");
-            printf("\n4)Print  : ");
-            printf("\n5)Quit   : ");
-            printf("\nEnter Your Choice : ");
-            scanf("%d",&op);
-            switch(op)
-                {
-                case 1:printf("\nEnter no.of elements :");
-                       scanf("%d",&n);
-                       printf("\n Enter tree data :");
-                       root=NULL;
-                        QueryPerformanceCounter(&t_ini);
-                       for(i=0;i<n;i++)
-                       {
-                        scanf("%d",&x);
-                        root=insert(root,x);
-                       }  
-                         QueryPerformanceCounter(&t_fin);
-                         secs = performancecounter_diff(&t_fin, &t_ini);
-                         printf("\n %.16g segundos\n", secs);
-                       break;
-                case 2:printf("\nEnter a data : ");
-                       scanf("%d",&x);
-                       root=insert(root,x);
-                       break;
-                case 3:printf("\nEnter a data : ");
-                       scanf("%d",&x);
-                       root=Delete(root,x);
-                       break;
-                case 4:    printf("\nPreorder sequence :\n");
-                    preorder(root);
-                    printf("\nInorder sequence :\n");
-                    inorder(root);
-                    break;
-                 }
-
-    }while(op!=5);*/
-        return 0;
 
 }
 node * insert(node *T,int x)
@@ -417,7 +404,7 @@ void preorder(node *T)
 {
     if(T!=NULL)
     {
-      //  printf(", %d",T->data);
+     printf(",%d",T->data);
         preorder(T->left);
         preorder(T->right);
     }
@@ -427,7 +414,7 @@ void inorder(node *T)
     if(T!=NULL)
     {
         inorder(T->left);
-       // printf(",%d",T->data);
+      printf(",%d",T->data);
         inorder(T->right);
     }
 }
